@@ -1,0 +1,45 @@
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+import models, schemas, crud
+from database import engine, SessionLocal
+
+models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.post("/medicines/", response_model=schemas.MedicineOut)
+def create_medicine(medicine: schemas.MedicineCreate, db: Session = Depends(get_db)):
+    return crud.create_medicine(db, medicine)
+
+@app.get("/medicines/", response_model=list[schemas.MedicineOut])
+def read_medicines(db: Session = Depends(get_db)):
+    return crud.get_medicines(db)
+
+@app.get("/medicines/{medicine_id}", response_model=schemas.MedicineOut)
+def read_medicine(medicine_id: int, db: Session = Depends(get_db)):
+    db_medicine = crud.get_medicine(db, medicine_id)
+    if db_medicine is None:
+        raise HTTPException(status_code=404, detail="Medicine not found")
+    return db_medicine
+
+@app.patch("/medicines/{medicine_id}", response_model=schemas.MedicineOut)
+def patch_medicine(medicine_id: int, medicine: schemas.MedicineUpdate, db: Session = Depends(get_db)):
+    db_medicine = crud.update_medicine(db, medicine_id, medicine)
+    if db_medicine is None:
+        raise HTTPException(status_code=404, detail="Medicine not found")
+    return db_medicine
+
+@app.delete("/medicines/{medicine_id}")
+def delete_medicine(medicine_id: int, db: Session = Depends(get_db)):
+    db_medicine = crud.delete_medicine(db, medicine_id)
+    if db_medicine is None:
+        raise HTTPException(status_code=404, detail="Medicine not found")
+    return {"message": "Medicine deleted successfully"}
