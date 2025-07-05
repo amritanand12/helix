@@ -2,15 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
+import os
+from dotenv import load_dotenv
 
-# SQLALCHEMY_DATABASE_URL = "sqlite:///./medicines.db"
-# engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-# SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-DB_HOST = "localhost"
-POSTGRES_DB_URL = f"postgresql://postgres:root@{DB_HOST}:5432/helixDB"
-print("Using PostgreSQL Database:", POSTGRES_DB_URL)
+load_dotenv()
 
-DATABASE_URL = POSTGRES_DB_URL
+db_url = os.getenv("POSTGRES_DB_URL")
+# db_url = f"postgresql://helixdb_a5py_user:u7c4zlt1LGha4nam8B9e3vleuOScb04t@dpg-d1kgj7emcj7s73cndrkg-a.singapore-postgres.render.com/helixdb_a5py"
+print("Using PostgreSQL Database:", db_url)
+
+DATABASE_URL = db_url
 
 engine = create_engine(
     DATABASE_URL,
