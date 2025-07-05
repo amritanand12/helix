@@ -50,6 +50,6 @@ def delete_medicine(medicine_id: int, db: Session = Depends(get_db)):
     return {"message": "Medicine deleted successfully"}
 
 
-
-if __name__ == "_main_":
-    uvicorn.run("app:app", host="0.0.0.0", port=9758,workers=8)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app:app", host="0.0.0.0", port=9758, workers=8)
