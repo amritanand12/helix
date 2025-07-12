@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 db_url = os.getenv("POSTGRES_DB_URL")
-# db_url = f"postgresql://helixdb_a5py_user:u7c4zlt1LGha4nam8B9e3vleuOScb04t@dpg-d1kgj7emcj7s73cndrkg-a.singapore-postgres.render.com/helixdb_a5py"
-print("Using PostgreSQL Database:", db_url)
 
 DATABASE_URL = db_url
 

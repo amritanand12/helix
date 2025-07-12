@@ -3,14 +3,14 @@ from pydantic import BaseModel
 
 class MedicineBase(BaseModel):
     name: str
-    price: int
+    price: float
 
 class MedicineCreate(MedicineBase):
     pass
 
 class MedicineUpdate(BaseModel):
     name: Optional[str] = None
-    price: Optional[int] = None
+    price: Optional[float] = None
 
 class MedicineOut(MedicineBase):
     id: int
