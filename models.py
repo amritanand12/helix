@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 class Medicine(Base):
     __tablename__ = "medicines"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True)
     name = Column(String, unique=True, index=True)
     price = Column(Float)
 
